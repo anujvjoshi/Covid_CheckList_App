@@ -1,8 +1,13 @@
 package com.covidchecklist.app.entities;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,4 +35,7 @@ public class Employee {
 
 	@Column(name = "email", nullable = false)
 	String email;
+	
+	 @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	 private Set<Survey> survey;
 }
