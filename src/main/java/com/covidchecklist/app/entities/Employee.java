@@ -1,12 +1,21 @@
 package com.covidchecklist.app.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee {
 
-	public String EmployeeId;
+	String employeeId;
 	
-	public String firstName;
+	String firstName;
 	
-	public String SecondName;
+	String lastName;
 	
-	public String email;
+	String email;
 }

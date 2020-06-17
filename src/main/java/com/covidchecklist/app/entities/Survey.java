@@ -1,14 +1,18 @@
 package com.covidchecklist.app.entities;
 
+import java.util.Date;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Survey {
+
+	Employee employee;
 	
-	private int questionId; 
+	List<QAndA> QandAs;
 	
-	private int answerId;
-	
-	private String question;
-	
-	private String option1;
-	
-	private String option2;
+	Date date; 
 }
