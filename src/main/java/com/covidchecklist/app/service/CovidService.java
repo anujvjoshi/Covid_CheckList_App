@@ -12,22 +12,22 @@ import com.covidchecklist.app.entities.Survey;
 public class CovidService {
 
 	// Fetches all the response from the database and sends to client 
-	@GetMapping("/getAllData")
-	public void getAllData()
+	@GetMapping("/getEntireSurveyData")
+	public void getEntireSurveyData()
 	{
 	
 	}
 	
 	// Fetches all the questions from the database and sends to client 
-	@GetMapping("/getAllQuestion")
-	public List<Survey> getAllQuestions()
+	@GetMapping("/getAllQuestionWithOptions")
+	public List<Survey> getAllQuestionsWithOptions()
 	{
 		return null;
 	}
 	
 	// Add survey record in database 
-	@PostMapping("/add")
-	public void addCovid19RecordToDB()
+	@PostMapping("/submitSurvey")
+	public void submitCovid19RecordToDB()
 	{
 		
 	}
