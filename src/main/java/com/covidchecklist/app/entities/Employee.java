@@ -20,22 +20,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
+	
+	public Employee(String employeeId, String name, String email) {
+		this.employeeId = employeeId;
+		this.name = name;
+		this.email = email;
+	}
 
 	@Id
 	@Column(name = "emp_id", nullable = false)
 	private String employeeId;
 
-	@Column(name = "first_name", nullable = false)
-	String firstName;
-	
-
-	@Column(name = "last_name", nullable = false)
-	String lastName;
-	
+	@Column(name = "name", nullable = false)
+	String name;
 
 	@Column(name = "email", nullable = false)
 	String email;
 	
-	 @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	 private Set<Survey> survey;
+	@OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Survey> survey;
 }
