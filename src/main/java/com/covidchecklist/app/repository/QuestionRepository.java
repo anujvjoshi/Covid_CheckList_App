@@ -7,5 +7,7 @@ import com.covidchecklist.app.entities.Question;
 
 @Repository
 public interface QuestionRepository  extends JpaRepository<Question, Integer> {
+
+	Question findByQuestion(String question);
 	
 }

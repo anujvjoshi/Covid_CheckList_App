@@ -8,13 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class QAndA {
 
@@ -28,10 +26,10 @@ public class QAndA {
 	private Question question;
 
 	@ManyToOne
-	@JoinColumn(name = "option1", referencedColumnName = "ans_id", nullable = false)
-	private Answer option1;
+	@JoinColumn(name = "option1", referencedColumnName = "option_id", nullable = false)
+	private AnswerOptions option1;
 
 	@ManyToOne
-	@JoinColumn(name = "option2", referencedColumnName = "ans_id", nullable = false)
-	private Answer option2;
+	@JoinColumn(name = "option2", referencedColumnName = "option_id", nullable = false)
+	private AnswerOptions option2;
 }

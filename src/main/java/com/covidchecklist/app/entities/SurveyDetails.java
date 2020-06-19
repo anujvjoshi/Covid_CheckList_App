@@ -9,13 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class SurveyDetails {
 
@@ -33,7 +31,7 @@ public class SurveyDetails {
 	private Question questionId;
 	
 	@ManyToOne
-	@JoinColumn(name = "ans_id", nullable = false)
-	private Answer  answerId;
+	@JoinColumn(name = "ans_id",referencedColumnName = "option_id", nullable = false)
+	private AnswerOptions  answerId;
 
 }
