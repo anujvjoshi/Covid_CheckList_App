@@ -42,7 +42,8 @@ public class ModelMapping {
 
 			mapper.map(src -> src.getEmployee().getEmployeeId(), SurveyDTO::setEmpId);
 			mapper.map(src -> src.getEmployee().getName(), SurveyDTO::setEmpName);
-
+			mapper.map(src -> src.getEmployee().getEmail(), SurveyDTO::setEmail);
+			
 			mapper.map(src -> src.getDate(), SurveyDTO::setDate);
 
 		}));

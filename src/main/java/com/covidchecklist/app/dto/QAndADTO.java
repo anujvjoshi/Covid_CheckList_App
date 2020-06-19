@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class QAndADTO {
 
-	private Integer questionAnswerId;
+	private Integer questionOptionId;
 
 	private String question;
 

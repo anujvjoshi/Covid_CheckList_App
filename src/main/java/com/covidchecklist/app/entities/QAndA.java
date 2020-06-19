@@ -19,7 +19,7 @@ public class QAndA {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "qa_id")
-	private Integer questionAnswerId;
+	private Integer questionOptionId;
 
 	@ManyToOne
 	@JoinColumn(name = "que_id", nullable = false)

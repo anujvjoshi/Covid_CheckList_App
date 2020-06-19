@@ -1,22 +1,23 @@
 package com.covidchecklist.app.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.covidchecklist.app.dto.EmployeeDTO;
-import com.covidchecklist.app.entities.AnswerOptions;
+import com.covidchecklist.app.dto.SurveyDTO;
+import com.covidchecklist.app.dto.SurveyDetailsDTO;
 import com.covidchecklist.app.entities.Employee;
-import com.covidchecklist.app.entities.QAndA;
-import com.covidchecklist.app.entities.Question;
+import com.covidchecklist.app.entities.Survey;
+import com.covidchecklist.app.entities.SurveyDetails;
 import com.covidchecklist.app.modelmapper.Covid19ModelMapper;
-import com.covidchecklist.app.repository.AnswerRepository;
+import com.covidchecklist.app.repository.AnswerOptionRepository;
 import com.covidchecklist.app.repository.EmployeeRepository;
-import com.covidchecklist.app.repository.QAndARepository;
 import com.covidchecklist.app.repository.QuestionRepository;
+import com.covidchecklist.app.repository.SurveyDetailsRepository;
 import com.covidchecklist.app.repository.SurveyRepository;
 import com.covidchecklist.app.service.CovidSurveyService;
 
@@ -27,90 +28,60 @@ public class CovidSurveyServiceImpl implements CovidSurveyService {
 	SurveyRepository surveyRepository;
 
 	@Autowired
+	SurveyDetailsRepository surveyDetailsRepository;
+
+	@Autowired
 	EmployeeRepository employeeRepository;
-
-	@Autowired
-	ReadExcelService readExcelService;
-
-	@Autowired
-	QAndARepository qAndARepository;
 
 	@Autowired
 	QuestionRepository questionRepository;
 
 	@Autowired
-	AnswerRepository answerRepository;
+	AnswerOptionRepository answerOptionRepository;
 
 	@Autowired
 	Covid19ModelMapper mapper;
 
 	@Override
-	public List<EmployeeDTO> getAllEmployeeDetails() {
-		List<Employee> empList = (List<Employee>) employeeRepository.findAll();
-		return mapper.map(empList, new TypeToken<List<EmployeeDTO>>() {
+	public List<SurveyDTO> getEntireSurveyData() {
+		List<Survey> survey = surveyRepository.findAll();
+		return mapper.map(survey, new TypeToken<List<SurveyDTO>>() {
 		}.getType());
 	}
 
 	@Override
-	public boolean validateEmployee(String empId) {
-		List<String> dbEmployees = getAllEmployeeDetails().stream().map(e -> e.getEmployeeId())
-				.collect(Collectors.toList());
-		return dbEmployees.stream().anyMatch(e -> e.equalsIgnoreCase(empId));
-	}
+	public void saveEntireSurveyData(SurveyDTO surveyDto) {
 
-	@Override
-	public void saveQuestionsToDB() {
-		List<QAndA> qAndAs = readExcelService.readQAndADataFromExcel();
+		Employee employee = employeeRepository.findByEmployeeId(surveyDto.getEmpId());
 
-		qAndAs.stream().forEach(q -> {
-			q.setQuestion(saveOrGetQuestion(q.getQuestion()));
-			q.setOption1(saveOrGetOption(q.getOption1()));
-			q.setOption2(saveOrGetOption(q.getOption2()));
+		Survey survey = new Survey();
+		survey.setDate(new Date());
+		survey.setEmployee(employee);
+
+		surveyRepository.save(survey);
+
+		List<SurveyDetails> SurveyDetailsList = new ArrayList<>();
+
+		surveyDto.getSurveyAnsList().forEach(s -> {
+
+			SurveyDetails surveyDetails = new SurveyDetails();
+			surveyDetails.setSurveyId(survey);
+			surveyDetails.setQuestionId(questionRepository.findByQuestionId(s.getQuestionId()));
+			surveyDetails.setAnswerId(answerOptionRepository.findByOptionId(s.getAnswerId()));
+
+			SurveyDetailsList.add(surveyDetails);
 		});
 
-		List<Question> questions = questionRepository.findAll();
-		List<String> lstQuestion = questions.stream().map(e -> e.getQuestion()).collect(Collectors.toList());
-		List<QAndA> allQAndAns = qAndAs.stream().filter(e -> !lstQuestion.contains(e.getQuestion().getQuestion()))
-				.collect(Collectors.toList());
+		surveyDetailsRepository.saveAll(SurveyDetailsList);
 
-		qAndARepository.saveAll(allQAndAns);
 	}
 
 	@Override
-	public void saveEmployeesToDB() {
-
-		List<String> dbEmployees = getAllEmployeeDetails().stream().map(e -> e.getEmployeeId())
-				.collect(Collectors.toList());
-		List<Employee> employees = readExcelService.readEmployeeDataFromExcel().stream()
-				.filter(e -> !dbEmployees.contains(e.getEmployeeId())).collect(Collectors.toList());
-
-		employeeRepository.saveAll(employees);
-	}
-
-	private AnswerOptions saveOrGetOption(AnswerOptions option) {
-
-		AnswerOptions savedOption = answerRepository.findByOption(option.getOption());
-
-		if (savedOption == null) {
-			savedOption = answerRepository.save(option);
-		}
-
-		return savedOption;
-
-	}
-
-	private Question saveOrGetQuestion(Question question) {
-
-		Question savedQuestion = questionRepository.findByQuestion(question.getQuestion());
-		if (savedQuestion == null) {
-			savedQuestion = questionRepository.save(question);
-		}
-		return savedQuestion;
-	}
-
-	@Override
-	public void getEntireSurveyData() {
-		surveyRepository.findAll();
+	public List<SurveyDetailsDTO> getSurveyDetails(Integer surveyId) {
+		Survey survey = surveyRepository.findById(surveyId).get();
+		List<SurveyDetails> surveyDetails = surveyDetailsRepository.findAllBySurveyId(survey);
+		return mapper.map(surveyDetails, new TypeToken<List<SurveyDetailsDTO>>() {
+		}.getType());
 	}
 
 	// For testing only

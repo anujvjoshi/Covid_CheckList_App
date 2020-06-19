@@ -2,17 +2,15 @@ package com.covidchecklist.app.service;
 
 import java.util.List;
 
-import com.covidchecklist.app.dto.EmployeeDTO;
+import com.covidchecklist.app.dto.SurveyDTO;
+import com.covidchecklist.app.dto.SurveyDetailsDTO;
 
 public interface CovidSurveyService {
 
-	void getEntireSurveyData();
+	List<SurveyDTO> getEntireSurveyData();
 	
-	List<EmployeeDTO> getAllEmployeeDetails();
+	void saveEntireSurveyData(SurveyDTO surveyDto);
+
+	List<SurveyDetailsDTO> getSurveyDetails(Integer surveyId);
 	
-	void saveEmployeesToDB();
-	
-	void saveQuestionsToDB();
-	
-	boolean validateEmployee(String empId);
 }
