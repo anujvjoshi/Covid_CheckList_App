@@ -45,12 +45,13 @@ public class QuestionOptionServiceImpl implements QuestionOptionService {
 			q.setOption2(saveOrGetOption(q.getOption2()));
 		});
 
-		List<Question> questions = questionRepository.findAll();
-		List<String> lstQuestion = questions.stream().map(e -> e.getQuestion()).collect(Collectors.toList());
+		List<QAndA> savedQuestionOptions = qAndARepository.findAll();
+		List<String> lstQuestion = savedQuestionOptions.stream().map(e -> e.getQuestion().getQuestion()).collect(Collectors.toList());
 		List<QAndA> allQAndAns = qAndAs.stream().filter(e -> !lstQuestion.contains(e.getQuestion().getQuestion()))
 				.collect(Collectors.toList());
 
 		qAndARepository.saveAll(allQAndAns);
+		
 	}
 
 	private AnswerOptions saveOrGetOption(AnswerOptions option) {
