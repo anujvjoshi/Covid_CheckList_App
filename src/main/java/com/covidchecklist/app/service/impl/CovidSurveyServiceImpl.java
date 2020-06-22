@@ -52,7 +52,7 @@ public class CovidSurveyServiceImpl implements CovidSurveyService {
 	@Override
 	public void saveEntireSurveyData(SurveyDTO surveyDto) {
 
-		Employee employee = employeeRepository.findByEmployeeId(surveyDto.getEmpId());
+		Employee employee = employeeRepository.findByEmployeeId(String.valueOf(surveyDto.getEmpId()));
 
 		Survey survey = new Survey();
 		survey.setDate(new Date());
@@ -78,7 +78,7 @@ public class CovidSurveyServiceImpl implements CovidSurveyService {
 
 	@Override
 	public List<SurveyDetailsDTO> getSurveyDetails(Integer surveyId) {
-		Survey survey = surveyRepository.findById(surveyId).get();
+		Survey survey = surveyRepository.findBySurveyId(surveyId);
 		List<SurveyDetails> surveyDetails = surveyDetailsRepository.findAllBySurveyId(survey);
 		return mapper.map(surveyDetails, new TypeToken<List<SurveyDetailsDTO>>() {
 		}.getType());

@@ -11,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -27,12 +30,17 @@ public class AnswerOptions {
 	@Column(name = "ans_option", nullable = false)
 	private String option;
 
+	@JsonManagedReference
+	@Exclude
 	@OneToMany(mappedBy = "answerId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SurveyDetails> surveyAnswer;
 
+	@JsonManagedReference
+	@Exclude
 	@OneToMany(mappedBy = "option1", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<QAndA> option1;
 
+	@Exclude
 	@OneToMany(mappedBy = "option2", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<QAndA> option2;
 }

@@ -14,7 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode.Exclude;
 
 @Entity
 @Data
@@ -25,6 +29,7 @@ public class Survey {
 	@Column(name = "survey_id")
 	Integer surveyId;
 
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "emp_id", nullable = false)
 	Employee employee;
@@ -32,6 +37,8 @@ public class Survey {
 	@Column(name = "date", nullable = false)
 	Date date;
 
+	@JsonManagedReference
+	@Exclude
 	@OneToMany(mappedBy = "surveyId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SurveyDetails> surveyDetails;
 }

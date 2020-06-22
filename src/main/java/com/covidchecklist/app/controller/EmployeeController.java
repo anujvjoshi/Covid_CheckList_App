@@ -23,9 +23,9 @@ public class EmployeeController {
 
 	@ResponseBody
 	@GetMapping(value = "/validateEmp/{id}")
-	public boolean validateEmp(@PathVariable("id") String empId) {
+	public String validateEmp(@PathVariable("id") String empId) {
 		boolean value = employeeService.validateEmployee(empId);
-		return value;
+		return value?empId:null;
 	}
 
 	@GetMapping("/saveDataToDB")

@@ -50,7 +50,7 @@ public class ModelMapping {
 
 		mapper.typeMap(SurveyDetails.class, SurveyDetailsDTO.class).addMappings((mapper -> {
 
-			mapper.map(src -> src.getSurveyId(), SurveyDetailsDTO::setSurveyId);
+			mapper.map(src -> src.getSurveyId().getSurveyId(), SurveyDetailsDTO::setSurveyId);
 			mapper.map(src -> src.getQuestionId().getQuestionId(), SurveyDetailsDTO::setQuestionId);
 			mapper.map(src -> src.getQuestionId().getQuestion(), SurveyDetailsDTO::setQuestion);
 

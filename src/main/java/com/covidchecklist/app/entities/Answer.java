@@ -11,13 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode.Exclude;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class Answer {
 
@@ -29,12 +30,18 @@ public class Answer {
 	@Column(name = "answer", nullable = false)
 	private String answer;
 
+	@JsonManagedReference
+	@Exclude
 	@OneToMany(mappedBy = "answerId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SurveyDetails> surveyAnswer;
 
+	@JsonManagedReference
+	@Exclude
 	@OneToMany(mappedBy = "option1", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<QAndA> option1;
 
+	@JsonManagedReference
+	@Exclude
 	@OneToMany(mappedBy = "option2", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<QAndA> option2;
 }
