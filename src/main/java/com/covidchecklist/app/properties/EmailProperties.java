@@ -35,5 +35,11 @@ public class EmailProperties {
 	@Value( "${spring.mail.password}" )
 	private String password;
 	
+	@Value( "${spring.mail.ccemail}" )
+	private String ccEmail;
+	
+	@Value( "${spring.mail.bccemail}" )
+	private String bccEmail;
+	
 
 }

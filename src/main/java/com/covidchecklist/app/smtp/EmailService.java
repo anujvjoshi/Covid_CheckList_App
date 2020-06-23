@@ -12,6 +12,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.covidchecklist.app.dto.SurveyDetailsDTO;
@@ -46,14 +47,15 @@ public class EmailService {
 		return props;
 	}
 
+	@Async
 	public void sendSurveyEmail(String surveyId, String name, String email, Date date,
 			List<SurveyDetailsDTO> surveyDetails) {
-
+			
 		String subject = "Submission # " + surveyId + " - Covid 19 checklist - " + name + " -  " + date;
 
-		String ccEmail = emailProperties.getUsername();
+		String ccEmail = emailProperties.getCcEmail();
 
-		String bccEmail = "";
+		String bccEmail = emailProperties.getBccEmail();
 
 		StringBuffer body = new StringBuffer();
 
