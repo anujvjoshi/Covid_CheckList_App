@@ -24,13 +24,13 @@ public class Question {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "que_id")
 	private Integer questionId;
-	
-	@Column(name = "question")
+
+	@Column(name = "question", columnDefinition = "LONGTEXT")
 	private String question;
-	
+
 	@JsonManagedReference
 	@Exclude
 	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<SurveyDetails> surveyQuestions;
-	
+
 }

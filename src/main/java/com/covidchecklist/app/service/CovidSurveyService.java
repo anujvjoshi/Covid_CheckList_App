@@ -9,7 +9,7 @@ public interface CovidSurveyService {
 
 	List<SurveyDTO> getEntireSurveyData();
 	
-	void saveEntireSurveyData(SurveyDTO surveyDto);
+	SurveyDTO saveEntireSurveyData(SurveyDTO surveyDto);
 
 	List<SurveyDetailsDTO> getSurveyDetails(Integer surveyId);
 	

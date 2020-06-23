@@ -20,6 +20,7 @@ import com.covidchecklist.app.repository.QuestionRepository;
 import com.covidchecklist.app.repository.SurveyDetailsRepository;
 import com.covidchecklist.app.repository.SurveyRepository;
 import com.covidchecklist.app.service.CovidSurveyService;
+import com.covidchecklist.app.smtp.EmailService;
 
 @Service
 public class CovidSurveyServiceImpl implements CovidSurveyService {
@@ -40,6 +41,9 @@ public class CovidSurveyServiceImpl implements CovidSurveyService {
 	AnswerOptionRepository answerOptionRepository;
 
 	@Autowired
+	EmailService emailService;
+
+	@Autowired
 	Covid19ModelMapper mapper;
 
 	@Override
@@ -50,7 +54,7 @@ public class CovidSurveyServiceImpl implements CovidSurveyService {
 	}
 
 	@Override
-	public void saveEntireSurveyData(SurveyDTO surveyDto) {
+	public SurveyDTO saveEntireSurveyData(SurveyDTO surveyDto) {
 
 		Employee employee = employeeRepository.findByEmployeeId(String.valueOf(surveyDto.getEmpId()));
 
@@ -73,6 +77,11 @@ public class CovidSurveyServiceImpl implements CovidSurveyService {
 		});
 
 		surveyDetailsRepository.saveAll(SurveyDetailsList);
+
+		emailService.sendSurveyEmail(survey.getSurveyId().toString(), employee.getName(), employee.getEmail(),
+				survey.getDate(), getSurveyDetails(survey.getSurveyId()));
+
+		return mapper.map(survey, SurveyDTO.class);
 
 	}
 
